@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TodoApp Compose</string>
+    <string name="add_button">Add Button</string>
+    <string name="tasks">Tasks</string>
+    <string name="search_tasks">Search tasks</string>
+    <string name="sort_tasks">Sort tasks</string>
+    <string name="delete_all_tasks">Delete all tasks</string>
+    <string name="delete_all">Delete all</string>
+    <string name="close_search_bar">Close search bar</string>
+    <string name="sad_face">Sad face icon</string>
+    <string name="no_tasks">No tasks found</string>
+</resources>
