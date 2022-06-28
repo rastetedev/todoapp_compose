@@ -7,7 +7,7 @@ interface TodoRepository {
 
     fun getAllTasks(): Flow<List<TodoTask>>
 
-    suspend fun getTaskById(todoTaskId: Int): Flow<TodoTask>
+    suspend fun getTaskById(todoTaskId: Int): Flow<TodoTask?>
 
     suspend fun filterTasks(query: String): Flow<List<TodoTask>>
 

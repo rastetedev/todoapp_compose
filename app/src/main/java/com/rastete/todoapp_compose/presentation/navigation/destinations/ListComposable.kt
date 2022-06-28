@@ -7,11 +7,11 @@ import androidx.navigation.navArgument
 import com.rastete.todoapp_compose.presentation.ui.screens.list.ListScreen
 import com.rastete.todoapp_compose.presentation.util.Constants.Navigation.LIST_ARGUMENT_KEY
 import com.rastete.todoapp_compose.presentation.util.Constants.Navigation.LIST_SCREEN
-import com.rastete.todoapp_compose.presentation.viewmodel.TodoSharedViewModel
+import com.rastete.todoapp_compose.presentation.viewmodel.ListViewModel
 
 fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: (taskId: Int) -> Unit,
-    sharedViewModel: TodoSharedViewModel
+    listViewModel: ListViewModel
 ) {
     composable(
         route = LIST_SCREEN,
@@ -23,7 +23,7 @@ fun NavGraphBuilder.listComposable(
     ) {
         ListScreen(
             navigateToTaskScreen = navigateToTaskScreen,
-            sharedViewModel = sharedViewModel
+            listViewModel = listViewModel
         )
     }
 }

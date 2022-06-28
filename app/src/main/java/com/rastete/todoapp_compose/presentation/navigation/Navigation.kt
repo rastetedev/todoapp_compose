@@ -7,12 +7,14 @@ import androidx.navigation.compose.NavHost
 import com.rastete.todoapp_compose.presentation.navigation.destinations.listComposable
 import com.rastete.todoapp_compose.presentation.navigation.destinations.taskComposable
 import com.rastete.todoapp_compose.presentation.util.Constants.Navigation.LIST_SCREEN
-import com.rastete.todoapp_compose.presentation.viewmodel.TodoSharedViewModel
+import com.rastete.todoapp_compose.presentation.viewmodel.ListViewModel
+import com.rastete.todoapp_compose.presentation.viewmodel.TaskViewModel
 
 @Composable
 fun SetupNavigation(
     navHostController: NavHostController,
-    sharedViewModel: TodoSharedViewModel
+    listViewModel: ListViewModel,
+    taskViewModel: TaskViewModel
 ) {
 
     val screen = remember(navHostController) {
@@ -25,10 +27,11 @@ fun SetupNavigation(
     ) {
         listComposable(
             navigateToTaskScreen = screen.task,
-            sharedViewModel = sharedViewModel
+            listViewModel = listViewModel
         )
         taskComposable(
-            navigateToListScreen = screen.list
+            navigateToListScreen = screen.list,
+            taskViewModel = taskViewModel
         )
     }
 }

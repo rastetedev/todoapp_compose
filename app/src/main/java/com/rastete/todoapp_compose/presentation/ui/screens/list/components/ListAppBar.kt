@@ -23,20 +23,21 @@ import com.rastete.todoapp_compose.presentation.ui.theme.Typography
 import com.rastete.todoapp_compose.presentation.ui.theme.topAppBarBackgroundColor
 import com.rastete.todoapp_compose.presentation.ui.theme.topAppBarContentColor
 import com.rastete.todoapp_compose.presentation.util.SearchAppBarState
-import com.rastete.todoapp_compose.presentation.viewmodel.TodoSharedViewModel
 
 @Composable
 fun ListAppBar(
-    sharedViewModel: TodoSharedViewModel,
     searchAppBarState: SearchAppBarState,
+    onSearchAppBarStateChange: (SearchAppBarState) -> Unit,
+    onSearchTextChange: (String) -> Unit,
     searchTextState: String,
+    onSearchClick: (String) -> Unit
 ) {
 
     when (searchAppBarState) {
         SearchAppBarState.CLOSED -> {
             DefaultListAppBar(
                 onSearchClick = {
-                    sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
+                    onSearchAppBarStateChange(SearchAppBarState.OPENED)
                 },
                 onSortClick = {},
                 onDeleteAllClick = {}
@@ -45,12 +46,14 @@ fun ListAppBar(
         else -> {
             SearchAppBar(
                 text = searchTextState,
-                onTextChange = { sharedViewModel.searchTextState.value = it },
-                onCloseClick = {
-                    sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
-                    sharedViewModel.searchTextState.value = ""
+                onTextChange = {
+                    onSearchTextChange(it)
                 },
-                onSearchClick = {}
+                onCloseClick = {
+                    onSearchAppBarStateChange(SearchAppBarState.CLOSED)
+                    onSearchTextChange("")
+                },
+                onSearchClick = onSearchClick
             )
         }
     }
@@ -86,7 +89,7 @@ fun SearchAppBar(
     text: String,
     onTextChange: (String) -> Unit,
     onCloseClick: () -> Unit,
-    onSearchClick: (String) -> Unit
+    onSearchClick: (String) -> Unit,
 ) {
 
     Surface(

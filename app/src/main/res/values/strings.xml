@@ -9,4 +9,12 @@
     <string name="close_search_bar">Close search bar</string>
     <string name="sad_face">Sad face icon</string>
     <string name="no_tasks">No tasks found</string>
+    <string name="add_task">Add task</string>
+    <string name="back_arrow">Back arrow</string>
+    <string name="close_screen">Close screen</string>
+    <string name="delete_task">Delete task</string>
+    <string name="update_task">Update task</string>
+    <string name="dropdown_arrow">Dropdown arrow</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
 </resources>

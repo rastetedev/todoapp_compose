@@ -6,6 +6,7 @@ import com.rastete.todoapp_compose.domain.TodoTask
 import com.rastete.todoapp_compose.domain.repository.TodoRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -24,10 +25,12 @@ class TodoRepositoryImpl @Inject constructor(private val todoDao: TodoDao) : Tod
         }
     }
 
-    override suspend fun getTaskById(todoTaskId: Int): Flow<TodoTask> {
+    override suspend fun getTaskById(todoTaskId: Int): Flow<TodoTask?> {
+        if (todoTaskId == -1) {
+            return flow { emit(null) }
+        }
         return todoDao.getTaskById(todoTaskId).map { it.toDomain() }
     }
-
 
     override suspend fun addTask(todoTask: TodoTask) {
         todoDao.insertTask(TodoTaskEntity.toEntity(todoTask))
