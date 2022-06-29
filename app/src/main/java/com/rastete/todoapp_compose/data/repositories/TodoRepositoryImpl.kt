@@ -29,7 +29,7 @@ class TodoRepositoryImpl @Inject constructor(private val todoDao: TodoDao) : Tod
         if (todoTaskId == -1) {
             return flow { emit(null) }
         }
-        return todoDao.getTaskById(todoTaskId).map { it.toDomain() }
+        return todoDao.getTaskById(todoTaskId).map { it?.toDomain() }
     }
 
     override suspend fun addTask(todoTask: TodoTask) {

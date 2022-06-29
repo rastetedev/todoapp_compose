@@ -31,7 +31,7 @@ fun TodoItem(
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
-            navigateToTaskScreen(todoTask.id)
+            navigateToTaskScreen(todoTask.id ?: 0)
         }
     ) {
         Column(

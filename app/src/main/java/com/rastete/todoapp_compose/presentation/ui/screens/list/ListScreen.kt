@@ -41,6 +41,9 @@ fun ListScreen(
                 searchTextState = searchTextState,
                 onSearchClick = {
                     listViewModel.search()
+                },
+                onDeleteAllClick = {
+                    listViewModel.deleteAllTasks()
                 }
             )
         },

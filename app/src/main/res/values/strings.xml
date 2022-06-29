@@ -17,4 +17,5 @@
     <string name="dropdown_arrow">Dropdown arrow</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="empty_fields">Empty fields</string>
 </resources>

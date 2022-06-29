@@ -33,7 +33,28 @@ fun NavGraphBuilder.taskComposable(
 
         TaskScreen(
             taskViewModel = taskViewModel,
-            navigateToListScreen = navigateToListScreen
+            navigateToListScreen = { action ->
+                when (action) {
+                    Action.ADD -> {
+                        taskViewModel.addTask()
+                        navigateToListScreen(action)
+
+                    }
+                    Action.UPDATE -> {
+                        taskViewModel.updateTask()
+                        navigateToListScreen(action)
+
+                    }
+                    Action.DELETE -> {
+                        taskViewModel.deleteTask()
+                        navigateToListScreen(action)
+
+                    }
+                    else -> {
+                        navigateToListScreen(action)
+                    }
+                }
+            }
         )
     }
 }

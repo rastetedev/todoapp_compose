@@ -16,7 +16,7 @@ fun ListContent(
         items(
             items = todoTaskList,
             key = { todoTask ->
-                todoTask.id
+                todoTask.id ?: 0
             }
         ) { todoTask ->
             TodoItem(

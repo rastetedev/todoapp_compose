@@ -26,7 +26,7 @@ data class TodoTaskEntity(
 
         fun toEntity(todoTask: TodoTask): TodoTaskEntity {
             return TodoTaskEntity(
-                id = todoTask.id,
+                id = todoTask.id ?: 0,
                 title = todoTask.title,
                 description = todoTask.description,
                 priority = todoTask.priority.toString()

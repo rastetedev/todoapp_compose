@@ -11,9 +11,9 @@ interface TodoDao {
     fun getAllTasks(): Flow<List<TodoTaskEntity>>
 
     @Query("SELECT * FROM TodoTaskEntity WHERE id = :todoTaskId")
-    fun getTaskById(todoTaskId: Int): Flow<TodoTaskEntity>
+    fun getTaskById(todoTaskId: Int): Flow<TodoTaskEntity?>
 
-    @Query("SELECT * FROM TodoTaskEntity WHERE title LIKE '%' + :query + '%' OR description LIKE '%' + :query + '%'")
+    @Query("SELECT * FROM TodoTaskEntity WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'")
     fun filterTasks(query: String): Flow<List<TodoTaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

@@ -2,16 +2,16 @@ package com.rastete.todoapp_compose.presentation.ui.screens.task.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.rastete.todoapp_compose.domain.Priority
-import com.rastete.todoapp_compose.domain.TodoTask
 import com.rastete.todoapp_compose.presentation.util.Action
+import com.rastete.todoapp_compose.presentation.util.Constants.DEFAULT_NO_TASK_ID
 
 @Composable
 fun TaskAppBar(
     title: String,
+    id: Int,
     navigateToListScreen: (Action) -> Unit
 ) {
-    if (title.isEmpty()) {
+    if (id == DEFAULT_NO_TASK_ID) {
         NewTaskAppBAr(
             navigateToListScreen = navigateToListScreen
         )

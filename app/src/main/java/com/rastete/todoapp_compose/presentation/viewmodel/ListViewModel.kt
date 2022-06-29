@@ -42,6 +42,9 @@ class ListViewModel @Inject constructor(private val todoRepository: TodoReposito
 
     fun changeSearchAppBarState(state: SearchAppBarState) {
         searchAppBarState.value = state
+        if(state == SearchAppBarState.CLOSED){
+            getAllTasks()
+        }
     }
 
     fun changeSearchText(searchText: String) {
@@ -60,5 +63,14 @@ class ListViewModel @Inject constructor(private val todoRepository: TodoReposito
             }
         }
     }
+
+    fun deleteAllTasks() {
+        viewModelScope.launch {
+            todoRepository.deleteAllTasks()
+        }
+    }
+
+
+
 
 }
