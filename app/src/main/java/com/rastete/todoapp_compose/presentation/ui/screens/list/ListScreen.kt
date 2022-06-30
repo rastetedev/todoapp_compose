@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.rastete.todoapp_compose.domain.Priority
 import com.rastete.todoapp_compose.domain.TodoTask
 import com.rastete.todoapp_compose.presentation.ui.screens.Screen
 import com.rastete.todoapp_compose.presentation.ui.screens.list.components.*
@@ -63,6 +64,9 @@ fun ListScreen(
                 },
                 onDeleteAllClick = {
                     listViewModel.deleteAllTasks()
+                },
+                onSortClick = {
+                    listViewModel.sort(it)
                 }
             )
         },

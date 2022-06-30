@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rastete.todoapp_compose.domain.Priority
 import com.rastete.todoapp_compose.domain.TodoTask
 import com.rastete.todoapp_compose.domain.repository.TodoRepository
 import com.rastete.todoapp_compose.presentation.util.RequestState
@@ -76,5 +77,38 @@ class ListViewModel @Inject constructor(
         }
     }
 
+    fun sort(priority: Priority) {
+        when (priority) {
+            Priority.LOW -> sortByLowPriority()
+            Priority.HIGH -> sortByHighPriority()
+            else -> getAllTasks()
+        }
+    }
+
+    private fun sortByLowPriority() {
+        tasks.value = RequestState.Loading
+        viewModelScope.launch {
+            try {
+                todoRepository.sortByLowPriority().collect {
+                    tasks.value = RequestState.Success(it)
+                }
+            } catch (e: Exception) {
+                tasks.value = RequestState.Error(e)
+            }
+        }
+    }
+
+    private fun sortByHighPriority() {
+        tasks.value = RequestState.Loading
+        viewModelScope.launch {
+            try {
+                todoRepository.sortByHighPriority().collect {
+                    tasks.value = RequestState.Success(it)
+                }
+            } catch (e: Exception) {
+                tasks.value = RequestState.Error(e)
+            }
+        }
+    }
 
 }

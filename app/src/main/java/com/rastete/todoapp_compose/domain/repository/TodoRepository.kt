@@ -20,4 +20,8 @@ interface TodoRepository {
     suspend fun restoreLastDeletedTask()
 
     suspend fun deleteAllTasks()
+
+    suspend fun sortByLowPriority(): Flow<List<TodoTask>>
+
+    suspend fun sortByHighPriority(): Flow<List<TodoTask>>
 }

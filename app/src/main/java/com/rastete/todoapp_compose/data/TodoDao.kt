@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface TodoDao {
 
     @Query("SELECT * FROM TodoTaskEntity WHERE isDisabled = 0 ORDER BY id ASC ")
-    fun getAllTasks(): Flow<List<TodoTaskEntity?>>
+    fun getAllTasks(): Flow<List<TodoTaskEntity>>
 
     @Query("SELECT * FROM TodoTaskEntity WHERE id = :todoTaskId")
     fun getTaskById(todoTaskId: Int): Flow<TodoTaskEntity>
@@ -39,5 +39,21 @@ interface TodoDao {
         deletePermanent()
         disableTask(taskId)
     }
+
+    @Query(
+        "SELECT * FROM TodoTaskEntity WHERE isDisabled = 0 ORDER BY CASE " +
+                "WHEN priority LIKE 'L%' THEN 1 " +
+                "WHEN priority LIKE 'M%' THEN 2" +
+                " WHEN priority LIKE 'H%' THEN 3 END"
+    )
+    fun sortByLowPriority(): Flow<List<TodoTaskEntity>>
+
+    @Query(
+        "SELECT * FROM TodoTaskEntity WHERE isDisabled = 0 ORDER BY CASE " +
+                "WHEN priority LIKE 'H%' THEN 1 " +
+                "WHEN priority LIKE 'M%' THEN 2" +
+                " WHEN priority LIKE 'L%' THEN 3 END"
+    )
+    fun sortByHighPriority(): Flow<List<TodoTaskEntity>>
 
 }
