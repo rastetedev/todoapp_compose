@@ -8,7 +8,7 @@ import dagger.hilt.android.components.ViewModelComponent
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object RepositoryModule {
+object MappersModule {
 
     @Provides
     fun providesTodoTaskMapper(): TodoTaskMapper = TodoTaskMapper()

@@ -15,13 +15,6 @@ class TodoRepositoryImpl @Inject constructor(
     private val todoTaskMapper: TodoTaskMapper
 ) : TodoRepository {
 
-    override fun getAllTasks(): Flow<List<TodoTask>> {
-        return todoDao.getAllTasks().map { list ->
-            list.map {
-                todoTaskMapper.fromEntityToDomain(it)
-            }
-        }
-    }
 
     override suspend fun filterTasks(query: String): Flow<List<TodoTask>> {
         return todoDao.filterTasks(query).map { list ->
@@ -57,7 +50,15 @@ class TodoRepositoryImpl @Inject constructor(
         todoDao.restoreTask()
     }
 
-    override suspend fun sortByLowPriority(): Flow<List<TodoTask>> {
+    override fun sortByDefault(): Flow<List<TodoTask>> {
+        return todoDao.getAllTasks().map { list ->
+            list.map {
+                todoTaskMapper.fromEntityToDomain(it)
+            }
+        }
+    }
+
+    override fun sortByLowPriority(): Flow<List<TodoTask>> {
         return todoDao.sortByLowPriority().map { list ->
             list.map {
                 todoTaskMapper.fromEntityToDomain(it)
@@ -65,7 +66,7 @@ class TodoRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun sortByHighPriority(): Flow<List<TodoTask>> {
+    override fun sortByHighPriority(): Flow<List<TodoTask>> {
         return todoDao.sortByHighPriority().map { list ->
             list.map {
                 todoTaskMapper.fromEntityToDomain(it)

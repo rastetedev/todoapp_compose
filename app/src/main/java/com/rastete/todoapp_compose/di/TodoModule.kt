@@ -1,6 +1,8 @@
 package com.rastete.todoapp_compose.di
 
+import com.rastete.todoapp_compose.data.repositories.PriorityRepositoryImpl
 import com.rastete.todoapp_compose.data.repositories.TodoRepositoryImpl
+import com.rastete.todoapp_compose.domain.repository.PriorityRepository
 import com.rastete.todoapp_compose.domain.repository.TodoRepository
 import dagger.Binds
 import dagger.Module
@@ -13,4 +15,7 @@ abstract class TodoModule {
 
     @Binds
     abstract fun bindsTodoRepository(todoRepository: TodoRepositoryImpl): TodoRepository
+
+    @Binds
+    abstract fun bindsPriorityRepository(priorityRepository: PriorityRepositoryImpl): PriorityRepository
 }
