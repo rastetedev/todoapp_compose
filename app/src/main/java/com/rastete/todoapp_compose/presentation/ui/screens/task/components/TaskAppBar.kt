@@ -3,8 +3,8 @@ package com.rastete.todoapp_compose.presentation.ui.screens.task.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.rastete.todoapp_compose.presentation.ui.screens.Screen
+import com.rastete.todoapp_compose.presentation.ui.screens.task.state.TaskScreenState
 import com.rastete.todoapp_compose.presentation.util.Action
-import com.rastete.todoapp_compose.presentation.viewmodel.TaskScreenState
 
 @Composable
 fun TaskAppBar(

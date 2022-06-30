@@ -10,22 +10,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.rastete.todoapp_compose.R
 import com.rastete.todoapp_compose.domain.TodoTask
 import com.rastete.todoapp_compose.presentation.ui.screens.Screen
-import com.rastete.todoapp_compose.presentation.ui.screens.Screen.Companion.DEFAULT_TASK_ID_ARGUMENT_VALUE
 import com.rastete.todoapp_compose.presentation.ui.screens.list.components.*
 import com.rastete.todoapp_compose.presentation.util.Action
 import com.rastete.todoapp_compose.presentation.util.RequestState
 import com.rastete.todoapp_compose.presentation.util.SearchAppBarState
-import com.rastete.todoapp_compose.presentation.util.toAction
 import com.rastete.todoapp_compose.presentation.viewmodel.ListViewModel
-import com.rastete.todoapp_compose.presentation.viewmodel.SharedViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun ListScreen(
     navController: NavController,
+    action: Action,
     listViewModel: ListViewModel = hiltViewModel(),
 ) {
 
@@ -38,16 +35,15 @@ fun ListScreen(
     val searchTextState: String by listViewModel.searchTextState
     val scaffoldState = rememberScaffoldState()
 
-    /*if (action.toAction() == Action.DELETE) {
-        *//*SnackBar(
+    if (action == Action.DELETE) {
+        SnackBar(
             scaffoldState = scaffoldState,
-            todoTask = sharedViewModel.getTodoTask(),
-            message = stringResource(id = R.string.restore_task),
-            actionLabel = stringResource(id = R.string.ok)
+            message = stringResource(id = com.rastete.todoapp_compose.R.string.restore_task),
+            actionLabel = stringResource(id = com.rastete.todoapp_compose.R.string.ok)
         ) {
-            sharedViewModel.restoreTask()
-        }*//*
-    }*/
+            listViewModel.restoreTask()
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -96,13 +92,12 @@ fun ListScreen(
 @Composable
 fun SnackBar(
     scaffoldState: ScaffoldState,
-    todoTask: TodoTask?,
     message: String,
     actionLabel: String,
     onUndoClick: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    LaunchedEffect(key1 = todoTask) {
+    LaunchedEffect(key1 = true) {
         scope.launch {
             val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
                 message = message,

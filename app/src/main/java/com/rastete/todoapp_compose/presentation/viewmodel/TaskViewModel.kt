@@ -9,6 +9,7 @@ import com.rastete.todoapp_compose.domain.Priority
 import com.rastete.todoapp_compose.domain.TodoTask
 import com.rastete.todoapp_compose.domain.repository.TodoRepository
 import com.rastete.todoapp_compose.presentation.ui.screens.Screen
+import com.rastete.todoapp_compose.presentation.ui.screens.task.state.TaskScreenState
 import com.rastete.todoapp_compose.presentation.util.Constants.MAX_TITLE_LENGTH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -103,9 +104,3 @@ class TaskViewModel @Inject constructor(
     }
 }
 
-data class TaskScreenState(
-    val id: Int = Screen.DEFAULT_TASK_ID_ARGUMENT_VALUE,
-    val title: String = "",
-    val description: String = "",
-    val priority: Priority = Priority.LOW
-)

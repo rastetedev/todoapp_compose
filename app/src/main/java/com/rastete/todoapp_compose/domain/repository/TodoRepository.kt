@@ -17,5 +17,7 @@ interface TodoRepository {
 
     suspend fun updateTask(todoTask: TodoTask)
 
+    suspend fun restoreLastDeletedTask()
+
     suspend fun deleteAllTasks()
 }

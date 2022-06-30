@@ -17,13 +17,17 @@ class TodoRepositoryImpl @Inject constructor(
 
     override fun getAllTasks(): Flow<List<TodoTask>> {
         return todoDao.getAllTasks().map { list ->
-            list.map { todoTaskMapper.fromEntityToDomain(it) }
+            list.filterNotNull().map {
+                todoTaskMapper.fromEntityToDomain(it)
+            }
         }
     }
 
     override suspend fun filterTasks(query: String): Flow<List<TodoTask>> {
         return todoDao.filterTasks(query).map { list ->
-            list.map { todoTaskMapper.fromEntityToDomain(it) }
+            list.map {
+                todoTaskMapper.fromEntityToDomain(it)
+            }
         }
     }
 
@@ -38,7 +42,7 @@ class TodoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteTask(taskId: Int) {
-        todoDao.deleteTask(taskId)
+        todoDao.delete(taskId = taskId)
     }
 
     override suspend fun updateTask(todoTask: TodoTask) {
@@ -47,5 +51,9 @@ class TodoRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAllTasks() {
         todoDao.deleteAllTasks()
+    }
+
+    override suspend fun restoreLastDeletedTask() {
+        todoDao.restoreTask()
     }
 }

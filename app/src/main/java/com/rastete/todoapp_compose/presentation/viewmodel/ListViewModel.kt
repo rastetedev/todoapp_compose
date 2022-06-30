@@ -15,8 +15,9 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class ListViewModel @Inject constructor(private val todoRepository: TodoRepository) :
-    ViewModel() {
+class ListViewModel @Inject constructor(
+    private val todoRepository: TodoRepository
+) : ViewModel() {
 
     var tasks = MutableStateFlow<RequestState<List<TodoTask>>>(RequestState.Idle)
         private set
@@ -41,7 +42,7 @@ class ListViewModel @Inject constructor(private val todoRepository: TodoReposito
 
     fun changeSearchAppBarState(state: SearchAppBarState) {
         searchAppBarState.value = state
-        if(state == SearchAppBarState.CLOSED){
+        if (state == SearchAppBarState.CLOSED) {
             getAllTasks()
         }
     }
@@ -69,7 +70,11 @@ class ListViewModel @Inject constructor(private val todoRepository: TodoReposito
         }
     }
 
-
+    fun restoreTask() {
+        viewModelScope.launch {
+            todoRepository.restoreLastDeletedTask()
+        }
+    }
 
 
 }

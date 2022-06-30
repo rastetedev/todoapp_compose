@@ -9,6 +9,7 @@ import com.rastete.todoapp_compose.presentation.ui.screens.Screen
 import com.rastete.todoapp_compose.presentation.ui.screens.Screen.Companion.ACTION_ARGUMENT_KEY
 import com.rastete.todoapp_compose.presentation.ui.screens.Screen.Companion.DEFAULT_ACTION_ARGUMENT_VALUE
 import com.rastete.todoapp_compose.presentation.ui.screens.list.ListScreen
+import com.rastete.todoapp_compose.presentation.util.toAction
 
 fun NavGraphBuilder.listComposable(
     navController: NavController
@@ -22,7 +23,9 @@ fun NavGraphBuilder.listComposable(
             }
         )
     ) { navBackStackEntry ->
-        ListScreen(navController = navController)
+
+        val action = navBackStackEntry.arguments?.getString(ACTION_ARGUMENT_KEY).toAction()
+        ListScreen(navController = navController, action)
     }
 
 }

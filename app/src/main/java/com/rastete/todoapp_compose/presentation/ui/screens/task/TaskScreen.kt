@@ -14,8 +14,8 @@ import com.rastete.todoapp_compose.R
 import com.rastete.todoapp_compose.presentation.ui.screens.Screen
 import com.rastete.todoapp_compose.presentation.ui.screens.task.components.TaskAppBar
 import com.rastete.todoapp_compose.presentation.ui.screens.task.components.TaskContent
+import com.rastete.todoapp_compose.presentation.ui.screens.task.state.TaskScreenState
 import com.rastete.todoapp_compose.presentation.util.Action
-import com.rastete.todoapp_compose.presentation.viewmodel.TaskScreenState
 import com.rastete.todoapp_compose.presentation.viewmodel.TaskViewModel
 
 @Composable
@@ -31,7 +31,7 @@ fun TaskScreen(
             TaskAppBar(taskScreenState) { action ->
 
                 if (action == Action.NO_ACTION) {
-                    navController.navigate(Screen.TaskListScreen.route + "/$action")
+                    navController.navigateUp()
                 } else {
                     if (taskViewModel.areValidFields()) {
                         when (action) {
@@ -40,7 +40,11 @@ fun TaskScreen(
                             Action.UPDATE -> taskViewModel.updateTask()
                             else -> Unit
                         }
-                        navController.navigate(Screen.TaskListScreen.route + "/$action")
+                        navController.navigate(Screen.TaskListScreen.route + "/$action") {
+                            popUpTo(Screen.TaskListScreen.route + "/{action}"){
+                                inclusive = true
+                            }
+                        }
                     } else {
                         showToast(context)
                     }
