@@ -38,6 +38,5 @@ fun Priority.mapToColor(): Color {
 
 enum class SearchAppBarState {
     OPENED,
-    CLOSED,
-    TRIGGERED
+    CLOSED
 }

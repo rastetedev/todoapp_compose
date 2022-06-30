@@ -1,29 +1,28 @@
 package com.rastete.todoapp_compose.presentation.navigation.destinations
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.rastete.todoapp_compose.presentation.ui.screens.Screen
+import com.rastete.todoapp_compose.presentation.ui.screens.Screen.Companion.ACTION_ARGUMENT_KEY
+import com.rastete.todoapp_compose.presentation.ui.screens.Screen.Companion.DEFAULT_ACTION_ARGUMENT_VALUE
 import com.rastete.todoapp_compose.presentation.ui.screens.list.ListScreen
-import com.rastete.todoapp_compose.presentation.util.Constants.Navigation.LIST_ARGUMENT_KEY
-import com.rastete.todoapp_compose.presentation.util.Constants.Navigation.LIST_SCREEN
-import com.rastete.todoapp_compose.presentation.viewmodel.ListViewModel
 
 fun NavGraphBuilder.listComposable(
-    navigateToTaskScreen: (taskId: Int) -> Unit,
-    listViewModel: ListViewModel
+    navController: NavController
 ) {
     composable(
-        route = LIST_SCREEN,
+        route = Screen.TaskListScreen.route + "/{action}",
         arguments = listOf(
-            navArgument(LIST_ARGUMENT_KEY) {
+            navArgument(name = ACTION_ARGUMENT_KEY) {
                 type = NavType.StringType
+                defaultValue = DEFAULT_ACTION_ARGUMENT_VALUE
             }
         )
-    ) {
-        ListScreen(
-            navigateToTaskScreen = navigateToTaskScreen,
-            listViewModel = listViewModel
-        )
+    ) { navBackStackEntry ->
+        ListScreen(navController = navController)
     }
+
 }

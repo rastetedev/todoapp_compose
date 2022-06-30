@@ -8,32 +8,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.rastete.todoapp_compose.R
-import com.rastete.todoapp_compose.domain.Priority
+import com.rastete.todoapp_compose.presentation.ui.screens.Screen
 import com.rastete.todoapp_compose.presentation.ui.screens.task.components.TaskAppBar
 import com.rastete.todoapp_compose.presentation.ui.screens.task.components.TaskContent
 import com.rastete.todoapp_compose.presentation.util.Action
+import com.rastete.todoapp_compose.presentation.viewmodel.TaskScreenState
 import com.rastete.todoapp_compose.presentation.viewmodel.TaskViewModel
 
 @Composable
 fun TaskScreen(
-    taskViewModel: TaskViewModel,
-    navigateToListScreen: (Action) -> Unit,
+    taskViewModel: TaskViewModel = hiltViewModel(),
+    navController: NavController,
 ) {
-    val idState: Int by taskViewModel.idState
-    val titleState: String by taskViewModel.titleState
-    val descriptionState: String by taskViewModel.descriptionState
-    val priorityState: Priority by taskViewModel.priorityState
+    val taskScreenState: TaskScreenState by taskViewModel.taskScreenState
 
     val context = LocalContext.current
     Scaffold(
         topBar = {
-            TaskAppBar(titleState, idState) { action ->
+            TaskAppBar(taskScreenState) { action ->
+
                 if (action == Action.NO_ACTION) {
-                    navigateToListScreen(action)
+                    navController.navigate(Screen.TaskListScreen.route + "/$action")
                 } else {
                     if (taskViewModel.areValidFields()) {
-                        navigateToListScreen(action)
+                        when (action) {
+                            Action.ADD -> taskViewModel.addTask()
+                            Action.DELETE -> taskViewModel.deleteTask()
+                            Action.UPDATE -> taskViewModel.updateTask()
+                            else -> Unit
+                        }
+                        navController.navigate(Screen.TaskListScreen.route + "/$action")
                     } else {
                         showToast(context)
                     }
@@ -43,15 +50,15 @@ fun TaskScreen(
         content = {
             TaskContent(
                 modifier = Modifier.padding(it),
-                title = titleState,
+                title = taskScreenState.title,
                 onTitleChange = { title ->
                     taskViewModel.changeTitle(title)
                 },
-                description = descriptionState,
+                description = taskScreenState.description,
                 onDescriptionChange = { description ->
                     taskViewModel.changeDescription(description)
                 },
-                priority = priorityState,
+                priority = taskScreenState.priority,
                 onPrioritySelected = { priority ->
                     taskViewModel.changePriority(priority)
                 }

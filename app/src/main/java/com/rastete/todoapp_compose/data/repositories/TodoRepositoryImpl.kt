@@ -1,47 +1,48 @@
 package com.rastete.todoapp_compose.data.repositories
 
 import com.rastete.todoapp_compose.data.TodoDao
-import com.rastete.todoapp_compose.data.entity.TodoTaskEntity
+import com.rastete.todoapp_compose.data.mapper.TodoTaskMapper
 import com.rastete.todoapp_compose.domain.TodoTask
 import com.rastete.todoapp_compose.domain.repository.TodoRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @ViewModelScoped
-class TodoRepositoryImpl @Inject constructor(private val todoDao: TodoDao) : TodoRepository {
+class TodoRepositoryImpl @Inject constructor(
+    private val todoDao: TodoDao,
+    private val todoTaskMapper: TodoTaskMapper
+) : TodoRepository {
 
     override fun getAllTasks(): Flow<List<TodoTask>> {
         return todoDao.getAllTasks().map { list ->
-            list.map { it.toDomain() }
+            list.map { todoTaskMapper.fromEntityToDomain(it) }
         }
     }
 
     override suspend fun filterTasks(query: String): Flow<List<TodoTask>> {
         return todoDao.filterTasks(query).map { list ->
-            list.map { it.toDomain() }
+            list.map { todoTaskMapper.fromEntityToDomain(it) }
         }
     }
 
-    override suspend fun getTaskById(todoTaskId: Int): Flow<TodoTask?> {
-        if (todoTaskId == -1) {
-            return flow { emit(null) }
+    override suspend fun getTaskById(todoTaskId: Int): Flow<TodoTask> {
+        return todoDao.getTaskById(todoTaskId).map { todoTaskEntity ->
+            todoTaskMapper.fromEntityToDomain(todoTaskEntity)
         }
-        return todoDao.getTaskById(todoTaskId).map { it?.toDomain() }
     }
 
     override suspend fun addTask(todoTask: TodoTask) {
-        todoDao.insertTask(TodoTaskEntity.toEntity(todoTask))
+        todoDao.insertTask(todoTaskMapper.fromDomainToEntity(todoTask))
     }
 
-    override suspend fun deleteTask(todoTask: TodoTask) {
-        todoDao.deleteTask(TodoTaskEntity.toEntity(todoTask))
+    override suspend fun deleteTask(taskId: Int) {
+        todoDao.deleteTask(taskId)
     }
 
     override suspend fun updateTask(todoTask: TodoTask) {
-        todoDao.updateTask(TodoTaskEntity.toEntity(todoTask))
+        todoDao.updateTask(todoTaskMapper.fromDomainToEntity(todoTask))
     }
 
     override suspend fun deleteAllTasks() {

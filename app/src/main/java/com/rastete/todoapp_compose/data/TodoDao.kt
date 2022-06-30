@@ -11,7 +11,7 @@ interface TodoDao {
     fun getAllTasks(): Flow<List<TodoTaskEntity>>
 
     @Query("SELECT * FROM TodoTaskEntity WHERE id = :todoTaskId")
-    fun getTaskById(todoTaskId: Int): Flow<TodoTaskEntity?>
+    fun getTaskById(todoTaskId: Int): Flow<TodoTaskEntity>
 
     @Query("SELECT * FROM TodoTaskEntity WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'")
     fun filterTasks(query: String): Flow<List<TodoTaskEntity>>
@@ -22,8 +22,8 @@ interface TodoDao {
     @Update
     suspend fun updateTask(task: TodoTaskEntity)
 
-    @Delete
-    suspend fun deleteTask(task: TodoTaskEntity)
+    @Query("UPDATE TodoTaskEntity SET isDisabled = :isDisabled WHERE id = :taskId")
+    suspend fun deleteTask(taskId: Int, isDisabled: Boolean = false)
 
     @Query("DELETE FROM TodoTaskEntity")
     suspend fun deleteAllTasks()

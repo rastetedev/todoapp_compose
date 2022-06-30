@@ -10,15 +10,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.rastete.todoapp_compose.R
 import com.rastete.todoapp_compose.presentation.ui.theme.fabBackgroundColor
-import com.rastete.todoapp_compose.presentation.util.Constants.DEFAULT_NO_TASK_ID
 
 @Composable
 fun ListFab(
-    onFabClicked: (taskId: Int) -> Unit
+    onFabClicked: () -> Unit
 ) {
     FloatingActionButton(
         onClick = {
-            onFabClicked(DEFAULT_NO_TASK_ID)
+            onFabClicked()
         },
         backgroundColor = MaterialTheme.colors.fabBackgroundColor
     ) {
