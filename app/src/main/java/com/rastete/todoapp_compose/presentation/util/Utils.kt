@@ -6,6 +6,7 @@ import com.rastete.todoapp_compose.presentation.ui.theme.HighPriorityColor
 import com.rastete.todoapp_compose.presentation.ui.theme.LowPriorityColor
 import com.rastete.todoapp_compose.presentation.ui.theme.MediumPriorityColor
 import com.rastete.todoapp_compose.presentation.ui.theme.NonePriorityColor
+import java.lang.Exception
 
 enum class Action {
     ADD,
@@ -17,13 +18,10 @@ enum class Action {
 }
 
 fun String?.toAction(): Action {
-    return when (this) {
-        "ADD" -> Action.ADD
-        "UPDATE" -> Action.UPDATE
-        "DELETE" -> Action.DELETE
-        "DELETE_ALL" -> Action.DELETE_ALL
-        "UNDO" -> Action.UNDO
-        else -> Action.NO_ACTION
+    return try {
+        if (this.isNullOrEmpty()) Action.NO_ACTION else Action.valueOf(this)
+    } catch (e: Exception) {
+        Action.NO_ACTION
     }
 }
 

@@ -86,6 +86,7 @@ fun ListScreen(
                         onSwipeToDelete = { todoTask ->
                             listViewModel.deleteTask(todoTask)
                             launchSnackBar(scope, scaffoldState, context, listViewModel)
+                            scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
                         }
                     )
                 }

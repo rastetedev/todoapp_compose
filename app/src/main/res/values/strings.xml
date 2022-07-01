@@ -21,4 +21,6 @@
     <string name="ok">Ok</string>
     <string name="restore_task">Restore task</string>
     <string name="todo_logo">Todo logo</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
