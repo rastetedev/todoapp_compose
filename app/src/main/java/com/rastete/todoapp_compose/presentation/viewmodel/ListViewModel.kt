@@ -141,4 +141,10 @@ class ListViewModel @Inject constructor(
         }
     }
 
+    fun deleteTask(todoTask: TodoTask) {
+        viewModelScope.launch {
+            todoRepository.deleteTask(todoTask.id ?: 0)
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.rastete.todoapp_compose.presentation.ui.screens.list
 
+import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
@@ -7,7 +8,7 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.rastete.todoapp_compose.domain.TodoTask
@@ -17,6 +18,7 @@ import com.rastete.todoapp_compose.presentation.util.Action
 import com.rastete.todoapp_compose.presentation.util.RequestState
 import com.rastete.todoapp_compose.presentation.util.SearchAppBarState
 import com.rastete.todoapp_compose.presentation.viewmodel.ListViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -30,6 +32,8 @@ fun ListScreen(
         listViewModel.getList()
     }
 
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     val tasksRequestState by listViewModel.tasks.collectAsState()
     val searchAppBarState: SearchAppBarState by listViewModel.searchAppBarState
     val searchTextState: String by listViewModel.searchTextState
@@ -37,12 +41,11 @@ fun ListScreen(
 
     if (action == Action.DELETE) {
         SnackBar(
+            scope = scope,
             scaffoldState = scaffoldState,
-            message = stringResource(id = com.rastete.todoapp_compose.R.string.restore_task),
-            actionLabel = stringResource(id = com.rastete.todoapp_compose.R.string.ok)
-        ) {
-            listViewModel.restoreTask()
-        }
+            context = context,
+            listViewModel = listViewModel
+        )
     }
 
     Scaffold(
@@ -79,6 +82,10 @@ fun ListScreen(
                         todoTaskList = (tasksRequestState as RequestState.Success<List<TodoTask>>).data,
                         navigateToTaskScreen = { taskId ->
                             navController.navigate(Screen.TaskScreen.route + "?taskId=$taskId")
+                        },
+                        onSwipeToDelete = { todoTask ->
+                            listViewModel.deleteTask(todoTask)
+                            launchSnackBar(scope, scaffoldState, context, listViewModel)
                         }
                     )
                 }
@@ -94,22 +101,29 @@ fun ListScreen(
 
 @Composable
 fun SnackBar(
+    scope: CoroutineScope,
     scaffoldState: ScaffoldState,
-    message: String,
-    actionLabel: String,
-    onUndoClick: () -> Unit
+    context: Context,
+    listViewModel: ListViewModel
 ) {
-    val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = true) {
-        scope.launch {
-            val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
-                message = message,
-                actionLabel = actionLabel
-            )
-            if (snackBarResult == SnackbarResult.ActionPerformed) {
-                onUndoClick()
-            }
-        }
+        launchSnackBar(scope, scaffoldState, context, listViewModel)
     }
 }
 
+fun launchSnackBar(
+    scope: CoroutineScope,
+    scaffoldState: ScaffoldState,
+    context: Context,
+    listViewModel: ListViewModel
+) {
+    scope.launch {
+        val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
+            message = context.getString(com.rastete.todoapp_compose.R.string.restore_task),
+            actionLabel = context.getString(com.rastete.todoapp_compose.R.string.ok)
+        )
+        if (snackBarResult == SnackbarResult.ActionPerformed) {
+            listViewModel.restoreTask()
+        }
+    }
+}

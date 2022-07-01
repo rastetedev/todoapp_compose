@@ -1,11 +1,13 @@
 package com.rastete.todoapp_compose.presentation.ui.screens
 
 sealed class Screen(val route: String) {
+    object SplashScreen : Screen(SPLASH_SCREEN)
     object TaskListScreen : Screen(TASKS_SCREEN)
     object TaskScreen : Screen(TASK_SCREEN)
 
 
     companion object {
+        private const val SPLASH_SCREEN = "splash_screen"
         private const val TASKS_SCREEN = "tasks_screen"
         private const val TASK_SCREEN = "task_screen"
 

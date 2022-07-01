@@ -30,7 +30,7 @@ fun ListAppBar(
     onSearchAppBarStateChange: (SearchAppBarState) -> Unit,
     onSearchTextChange: (String) -> Unit,
     searchTextState: String,
-    onSearchClick: (String) -> Unit,
+    onSearchClick: () -> Unit,
     onDeleteAllClick: () -> Unit,
     onSortClick: (Priority) -> Unit
 ) {
@@ -90,7 +90,7 @@ fun SearchAppBar(
     text: String,
     onTextChange: (String) -> Unit,
     onCloseClick: () -> Unit,
-    onSearchClick: (String) -> Unit,
+    onSearchClick: () -> Unit,
 ) {
 
     Surface(
@@ -147,7 +147,7 @@ fun SearchAppBar(
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
-                onSearch = { onSearchClick(text) }
+                onSearch = { onSearchClick() }
             ),
             colors = TextFieldDefaults.textFieldColors(
                 cursorColor = MaterialTheme.colors.topAppBarContentColor,
